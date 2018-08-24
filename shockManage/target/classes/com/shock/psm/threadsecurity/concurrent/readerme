@@ -1,0 +1,35 @@
+
+线程并行控制
+CountDownLatch 
+CyclicBarrier 
+Semaphore 区别和共同之处
+
+（1）CountDownLatch的计数器只能使用一次。而CyclicBarrier的计数器可以使用reset() 方法重置。所以CyclicBarrier能处理更为复杂的业务场景，比如如果计算发生错误，可以重置计数器，并让线程们重新执行一次。
+
+（2）CyclicBarrier还提供其他有用的方法，比如getNumberWaiting方法可以获得CyclicBarrier阻塞的线程数量。isBroken方法用来知道阻塞的线程是否被中断。比如以下代码执行完之后会返回true。
+
+（3）CountDownLatch会阻塞主线程，CyclicBarrier不会阻塞主线程，只会阻塞子线程。
+
+ （4）CountDownLatch是减计数方式，计数==0时释放所有等待的线程；
+    CyclicBarrier是加计数方式，计数达到构造方法中参数指定的值时释放所有等待的线程。
+    Semaphore，每次semaphore.acquire()，获取一个资源，
+                                             每次semaphore.acquire(n)，获取n个资源，当达到semaphore 指定资源数量时就不能再访问线程处于阻塞，
+                                             必须等其它线程释放资源，semaphore.relase()每次资源一个资源，semaphore.relase(n)每次资源n个资源。
+                                             
+                                             
+  应用场景：
+  
+      CountDownLatch ： 裁判主持异常赛跑比赛，所有人同事跑，然后裁判（主线程） 等到所有人到终点以后计算成绩，公布答案。所有人在跑的过程中，裁判属于阻塞的状态，等待所有人跑完之后才公布成绩排名
+      CyclicBarrier ：比如团队旅游，一个团队通常分为几组，每组人走的路线可能不同，但都需要到达某一地点等待团队其它成员到达后才能进行下一站。
+      Semaphore:可以用于做流量控制，特别公用资源有限的应用场景，比如数据库连接。假如有一个需求，要读取几万个文件的数据，因为都是IO密集型任务，我们可以启动几十个线程并发的读取，但是如果读到内存后，
+      还需要存储到数据库中，而数据库的连接数只有10个，这时我们必须控制只有十个线程同时获取数据库连接保存数据，否则会报错无法获取数据库连接。这个时候，我们就可以使用Semaphore来做流控
+      
+      
+ 二：
+    jdk1.5 实现的java.util.concurrent.* 包是一个针对cpu 多核并行处理并发问题的粗粒度的处理方案
+    jdk1.7 中增加的 并发包中 java.util.concurrent.forkjoin.* 包则是对这个框架的重要扩充。Fork/Join模式     
+    
+    
+      
+      
+ 

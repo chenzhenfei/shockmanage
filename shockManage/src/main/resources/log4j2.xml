@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+    	<!-- 仅限本地开发环境开启 -->
+    	
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%date{HH:mm:ss,SSS} -|- [%thread] -|- %-5level -|- %logger -|- %method(%line) -|- %message%n"/>
+        </Console>
+       
+        <!-- 用系统文件来记录日志-->
+        <RollingFile name="RollingFileAppender" fileName="/tmp/logs/pis/pis.log" filePattern="/tmp/logs/pis/pis_%d{yyyy-MM-dd}.log">  
+            <PatternLayout pattern="%date{HH:mm:ss,SSS} -|- [%thread] -|- %-5level -|- %logger -|- %method(%line) -|- %message%n" />
+            <Policies>   
+            	<TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/> 
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="net.sf.ehcache" level="error"/>
+        <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
+        <Logger name="org.springframework.security" level="error"/>
+        <Logger name="org.apache" level="error"/>
+        <Logger name="org.apache.velocity" level="fatal"/>
+        <!-- Suppress invalid warning messages from JSF -->
+        <Logger name="org.apache.myfaces" level="error"/>
+        <!-- Suppress warnings from Struts -->
+        <Logger name="org.apache.struts2.util.TextProviderHelper" level="error"/>
+        <Logger name="com.opensymphony.xwork2.util.OgnlUtil" level="error"/>
+        <Logger name="com.opensymphony.xwork2.ognl.OgnlValueStack" level="error"/>
+        <Logger name="org.dbunit" level="warn"/>
+        <Logger name="org.hibernate" level="warn"/>
+        <!-- Uncomment if you want to see Hibernate's SQL -->
+        <!--<Logger name="org.hibernate.SQL" level="debug"/>-->
+        <Logger name="org.springframework" level="warn"/>
+        <!-- 如下内容，仅限开发和测试环境时使用，生产环境需关闭 -->
+        <Logger name="com.purang.pis" level="debug"/>
+        <Logger name="org.appfuse" level="debug"/>
+        <Logger name="org.appfuse.tool" level="info"/>
+
+        <Root level="warn">
+        	<!-- 仅限本地开发环境开启 -->
+            <!-- <AppenderRef ref="ConsoleAppender" /> -->
+            <AppenderRef ref="RollingFileAppender" />
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xmlns:jaxrs="http://cxf.apache.org/jaxrs"  
+    xmlns:cxf="http://cxf.apache.org/core"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd   
+    http://cxf.apache.org/jaxws   
+    http://cxf.apache.org/schemas/jaxws.xsd
+    http://cxf.apache.org/jaxrs   
+    http://cxf.apache.org/schemas/jaxrs.xsd">  
+      
+    <import resource="classpath:META-INF/cxf/cxf.xml" />  
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />  
+     
+    <!-- cxf 基于 jax-ws based_xml api 实现 --> 
+    <jaxws:endpoint id="helloService" implementor="#helloServiceImpl" address="/HelloService" />  
+    <jaxws:endpoint id="numberService" implementor="#numberServiceImpl" address="/NumberService" />  
+    
+  	
+  	<!-- CXF通过JSonProvider对JSon提供支持 -->
+    <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
+    <!-- CXF通过JSonProvider对JSon提供跨域支持 -->
+    <bean id="jsonPProvider" class="org.apache.cxf.jaxrs.provider.jsonp.JsonpPreStreamInterceptor"/>
+    
+    <!-- <bean id="encodingLoggingInInterceptor" class="com.abc.api.util.EncodingLoggingInInterceptor"/> -->
+	<bean id="outLoggingInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+    
+    
+	<!-- cxf 基于 jax-rs restful api 实现 -->
+  	<jaxrs:server address="/app">
+		<jaxrs:features>
+			<cxf:logging />
+			<ref bean="swagger2Feature" />
+		</jaxrs:features>
+		
+		<jaxrs:serviceBeans>
+			<ref bean="helloServiceImpl" />
+			<ref bean="numberServiceImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+		   <ref bean ="jsonProvider"/>
+		   <ref bean ="jsonPProvider"/>
+		</jaxrs:providers>
+		<!-- CXF对AJAX跨域的支持 采用 jsonP -->
+		<jaxrs:inInterceptors>
+			<bean class="org.apache.cxf.jaxrs.provider.jsonp.JsonpInInterceptor" />
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<bean class="org.apache.cxf.jaxrs.provider.jsonp.JsonpPostStreamInterceptor" />
+		</jaxrs:outInterceptors>
+		
+		<jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
+            <entry key="feed" value="application/atom+xml"/>
+        </jaxrs:extensionMappings>
+		
+		 <jaxrs:languageMappings>
+	        <entry key="en" value="en-gb"/>  
+	    </jaxrs:languageMappings>
+	    
+	</jaxrs:server>
+	
+	<!-- Swagger2Feature for JAX-RS -->  
+    <bean id="swagger2Feature" class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
+	    <property name="title" value="JAX-RS API with Swagger Documentation"></property>
+	    <property name="description" value="for the Application"></property>
+    </bean>
+  
+</beans>  

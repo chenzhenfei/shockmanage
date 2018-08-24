@@ -1,0 +1,9 @@
+  : xml 解析demo ,学习xml 解析和创建
+  
+1）DOM(JAXP Crimson解析器) 
+
+2）SAX
+
+3）JDOM  http://www.jdom.org/
+
+4）DOM4J http://dom4j.sourceforge.net/ 

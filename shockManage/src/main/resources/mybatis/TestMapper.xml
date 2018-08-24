@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shock.psm.dao.TestDao" >
+
+  <select id="findById" resultType="com.shock.psm.domain.Num" >
+     select i as num from num where i=1
+  </select>
+  
+  <update id="updateNum"  >
+     update num set i = i+100  where i=1
+  </update>
+  
+  <delete id="deleteNumByid"  >
+     delete from num where i =#{num,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="addNum" >
+     insert into num(i) values(#{num,jdbcType=BIGINT})
+  </insert>
+  
+  <select id="findAll" resultType="com.shock.psm.domain.Num" >
+      select i as num from num
+  </select>
+  
+   
+</mapper>
