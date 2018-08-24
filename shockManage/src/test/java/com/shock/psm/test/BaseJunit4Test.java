@@ -15,4 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		)
 @Transactional
 public class BaseJunit4Test {
+	
+	/** 测试git
+	**/
 }
