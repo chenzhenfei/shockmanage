@@ -16,6 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @Transactional
 public class BaseJunit4Test {
 	
-	/** 测试gita
+	/** 本地测试
 	**/
 }
